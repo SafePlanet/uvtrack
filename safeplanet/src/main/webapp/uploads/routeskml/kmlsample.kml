@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.0">
+	<Document>
+		<name>GPS Visualizer data</name>
+		<Style id="waypoint">
+			<IconStyle>
+				<color>ffffffff</color>
+				<scale>1</scale>
+				<Icon><href>http://maps.google.com/mapfiles/kml/pal4/icon56.png</href></Icon>
+				<hotSpot x="0.5" xunits="fraction" y="0.5" yunits="fraction" />
+			</IconStyle>
+			<BalloonStyle>
+				<text><![CDATA[<p align="left" style="white-space:nowrap;"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id="track">
+			<LineStyle>
+				<color>ff0000ff</color>
+				<width>3</width>
+			</LineStyle>
+		</Style>
+		<Style id="polygon">
+			<LineStyle>
+				<color>ffff0000</color>
+				<width>3</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ff0000</color>
+				<colorMode>normal</colorMode>
+				<fill>1</fill>
+				<outline>1</outline>
+			</PolyStyle>
+		</Style>
+		<Folder>
+			<name>Waypoints</name>
+			<Placemark>
+				<name></name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2275782,28.6130638</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>India Gate</name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2297668,28.6129885</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Man Singh Road</name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2251749,28.6163791</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dr. Rajendra Prasad Road</name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2186732,28.6167370</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Rajpath</name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2183728,28.6135348</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Starting Point</name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2055840,28.6141752</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Waypoint - After Start</name>
+				<description></description>
+				<styleUrl>#waypoint</styleUrl>
+				<Point>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>77.2122574,28.6138362</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>Tracks</name>
+		<Placemark>
+				<name></name>
+				<description>Length: 4.499 km (2.796 mi)</description>
+				<visibility>1</visibility>
+				<open>0</open>
+				<styleUrl>#track</styleUrl>
+				<LineString>
+					<extrude>0</extrude>
+					<tessellate>1</tessellate>
+					<altitudeMode>clampedToGround</altitudeMode>
+					<coordinates>
+						77.2055626,28.6140999 77.2086954,28.6140245 77.2109270,28.6137985 77.2121072,28.6137985 77.2139311,28.6136855 77.2162485,28.6135536 77.2185445,28.6133276 77.2185230,28.6142694 77.2186518,28.6154561 77.2187376,28.6166993 77.2204328,28.6166617 77.2229648,28.6164168 77.2246599,28.6163980 77.2247672,28.6166052 77.2250676,28.6167182 77.2253036,28.6165110 77.2253895,28.6161908 77.2276855,28.6148722 77.2277284,28.6140245 77.2276640,28.6130073 77.2297454,28.6129508 77.2304749,28.6128755 77.2306252,28.6125929 77.2307539,28.6124799 77.2305393,28.6121031 77.2301316,28.6115192 77.2295737,28.6108599 77.2292089,28.6102948 77.2303677,28.6095601 77.2311187,28.6095224 77.2319555,28.6097673 77.2326422,28.6100687 77.2336292,28.6106150 77.2343802,28.6109729 77.2346377,28.6120278 77.2345948,28.6126494 77.2375774,28.6125552 
+					</coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>

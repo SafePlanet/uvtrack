@@ -1,0 +1,15 @@
+<div class="typeahead">
+	<ul data-ng-class="{'focused': focused}" class="tags" data-ng-click="focusIn()">
+		<li class="tag" data-ng-repeat="s in list track by $index">
+			{{getDisplayTag(s)}}
+			<span data-ng-click="removeItem(s)">x</span>
+		</li>
+		<li class="inputtag">
+			<input data-ng-blur="focusOut()" placeholder="Select Student" focus="{{focused}}" data-ng-model-options="{debounce: 500}" type="text" data-ng-model="itemsearch" data-ng-keydown="keyPress($event)" />
+		</li>
+	</ul>
+	<ul class="list" data-ng-show="focused">
+		<li data-ng-class="{'active': selPos == $index}" data-ng-repeat="item in (filteredItems = (items | notin: list | filter: itemsearch | limitTo: 10)) track by $index" data-ng-mousedown="addItem(item)"
+			data-ng-mouseover="hover($index)">{{getDisplayItem(item)}}</li>
+	</ul>
+</div>

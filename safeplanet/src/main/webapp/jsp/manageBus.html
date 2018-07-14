@@ -1,0 +1,222 @@
+
+
+<style>
+    .error {
+      color: red;
+    }
+  
+ul#menu {
+    padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+    display: inline;
+}
+
+ul#menu li a {
+    background-color: #3CA4D8;
+    color: white;
+    padding: 5px 12px;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+    background-color: grey;
+}
+</style>
+
+<div class="col-md-12 col-part-left" style="max-height:480px; overflow-y:auto; -webkit-overflow-scrolling: touch;">
+
+ <marquee class="alert-danger-m" ng-if="expiringFleets && expiringFleets.length>0">Service is ending soon for {{expiringFleets.indexOf(',') > -1 ? 'buses' : 'bus'}} {{expiringFleets}}, please renew asap.</marquee>
+
+    <div class="box box-primary">
+        <div class="box-header">
+            <h3 class="box-title">Manage Fleet </h3>
+        </div>
+        <div class="pull-right">
+            <ul id="menu">
+                <li><a href="javascript:void(0);" ng-click="addBusFormModal()">Add Vehicle</a></li>
+                <li><a href="#manageDevices.html">Manage Devices</a></li>
+            </ul>
+        </div>
+        
+            <div class="box-body">
+                 <table id="dataTableGrid"
+				class="table table-bordered table-striped dt-responsive nowrap">
+				<thead>
+					<tr>
+                            <th>Reg.#</th>
+                            <th>Owner Name</th>
+                            <th>Owner Mobile</th>
+                            <th>Driver Name</th>
+                            <th>Driver Mobile</th>
+                            <th>Conductor Name</th>
+                            <th>Conductor Mobile</th>
+                            <th>Female Att. Name</th>
+                            <th>Female Att. Mobile</th>
+                            <th>Action</th>
+                        </tr>
+				</thead>
+				<tbody>
+					<tr
+						ng-repeat="fleet in fleetList" ng-class="{'row-danger':fleet.isExpiring}">
+
+						<td> {{fleet.regNumber}}</td>
+                            <td> {{fleet.ownerName}}</td>
+                            <td> {{fleet.ownerMobile}}</td>
+                            <td> {{fleet.driverName}}</td>
+                            <td> {{fleet.driverMobile}}</td>
+                            <td> {{fleet.navigatorName}}</td>
+                            <td> {{fleet.navigatorMobile}}</td>
+                             <td> {{ fleet.conductor2Name}}</td>
+                            <td> {{fleet.conductor2Mobile}}</td>
+                            <td><a href="javascript:void(0);" ng-click="modifyBusForm(fleet.id)" ><i class="ion-edit"></i> Edit</a></td>
+
+						
+					</tr>
+				</tbody>
+			</table>
+                
+                          <div id="addBusModal" class="modal fade" tabindex="-1" data-width="1180" style="display: none;">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Add/Update Bus Details</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form name="busDetailsForm" ng-submit="submitBusForm()" requried>
+                                        <div class="form-group">
+                                        <table style="width:1100px; height:250px;" cellpadding="10">
+                                        
+                                        			<tr>
+                                        			<td>
+                                       				<label  style="margin-left:10px;">Device Name</label>
+                                       				</td>
+                                       				<td>
+                                                    <select  class="form-control" ng-model="busData.selectedDeviceId" >
+									                                       <option value="">Select Device</option> 
+												<option ng-repeat="device in DeivceList" value="{{device.deviceId}}">{{device.name}}    
+												</option> </select>
+                                                    </td>
+                                        			<td>
+                                       				<label style="margin-left:10px;">Registration Number</label>
+                                       				</td>
+                                       				<td>
+                                                    <input type="text" class="form-control" placeholder="Registration Number" ng-model="busData.regNumber" maxlength="15"/>
+                                                    </td>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Fleet Model</label>
+                                                    </td>
+                                                    <td>
+                                                    <select name="BusDatafleetModel" ng-model="busData.fleetModel" class="form-control" >
+														<option  value="">Select Fleet Model</option>
+														<option  value="TATA">TATA</option>
+														<option  value="MARUTI SUZUKI">MARUTI SUZUKI</option>
+														<option  value="ASHOK LEYLAND">ASHOK LEYLAND</option>
+														<option  value="HERO">HERO</option>
+														<option  value="HONDA">HONDA</option>
+														<option  value="TOYOTA">TOYOTA</option>
+														<option  value="RENAULT">RENAULT</option>
+														<option  value="BAJAJ">BAJAJ</option>
+														<option  value="EICHER MOTORS">EICHER MOTORS</option>
+														<option  value="FORD">FORD</option>
+														<option  value="OTHER">OTHER</option>
+													</select>
+                                                    </td>
+                                                    <td>
+                                                    <label  style="margin-left:10px;">Fleet Make</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="date" class="form-control" placeholder="Fleet Make" ng-model="busData.fleetMake" value="{{ busData.fleetMake | date: 'yyyy-MM-dd' }}" data-date-format="DD/MM/YYYY"/>
+                                                    </td></tr>
+                                                    <tr>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Fleet Type</label>
+                                                    </td>
+                                                    <td>
+                                                    <select name="BusDatafleetType" ng-model="busData.fleetType" class="form-control" >
+														<option  value="" >Select Fleet Type</option>
+														<option  value="Car">Car</option>
+														<option  value="Bus">Bus</option>
+														<option  value="Truck">Truck</option>
+														<option  value="Bike">Bike</option>
+													</select>
+                                                    </td>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Owner Name</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Owner Name" ng-model="busData.ownerName" maxlength="50"/>
+                                                    </td>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Owner Mobile</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Owner Mobile" name="ownerMobile" required ng-model="busData.ownerMobile" maxlength=10  onkeyup="this.value = this.value.replace(/[^0-9]/, '')" />
+                                                    </td>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Driver Name</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Driver Name" ng-model="busData.driverName" maxlength="50"/>
+                                                    </td></tr>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Driver Mobile</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Driver Mobile" ng-model="busData.driverMobile" name="driverMobile" required maxlength=10 onkeyup="this.value = this.value.replace(/[^0-9]/, '')" />
+                                                    </td>
+                                                    
+                                                   
+                                                    <td>                                                  
+                                                    <label style="margin-left:10px;">Conductor Name</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Navigator Name" ng-model="busData.navigatorName" maxlength="50"/>
+                                                    </td>
+                                                    <td>
+                                                    <label style="margin-left:10px;">Conductor Mobile</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Navigator Mobile" ng-model="busData.navigatorMobile" name="navigatorMobile" required maxlength=10 onkeyup="this.value = this.value.replace(/[^0-9]/, '')"/>
+                                                    </td>
+                                                    <td>
+                                                    <label  style="margin-left:10px;">Female Att. Name</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Ayya Name" ng-model="busData.conductor2Name" maxlength="50"/>
+                                                    </td></tr><tr>
+                                                    <td>
+                                                    <label  style="margin-left:10px;">Female Att. Mobile</label>
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control" placeholder="Ayya Mobile" ng-model="busData.conductor2Mobile" name="conductor2Mobile"  maxlength=10 onkeyup="this.value = this.value.replace(/[^0-9]/, '')"/>
+                                                    </td>
+                                                    </tr>
+                                            </table>
+                                                 		<br>
+                                                    <input type="hidden" ng-model="busData.fleetID">
+                                                    <button type="button" data-dismiss="modal" class="btn btn-inverse" style="alt:center;">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary"  style="alt:center;">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                </div>
+           
+            </div>
+
+            <div class="box-footer">
+                <div class="alert alert-success" ng-show="showSuccessAlert">
+                    <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button> <strong></strong>{{successTextAlert}}
+                </div>
+            </div>
+        
+    </div>
+</div>

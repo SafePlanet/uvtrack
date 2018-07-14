@@ -1,0 +1,271 @@
+<style>
+ul#menu {
+	padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+	display: inline;
+}
+
+ul#menu li a {
+	background-color: #3CA4D8;
+	color: white;
+	padding: 5px 12px;
+	text-decoration: none;
+	border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+	background-color: grey;
+}
+    @media screen and (min-width: 700px) {
+        .modal {
+          width: 700px; /* New width for large modal */
+        }
+</style>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<div class="col-md-12 col-part-left"
+	style="max-height: 560px;">
+	<div class="box box-primary">
+		<div class="box-header">
+			<h3>Manage Students </h3>
+			<h4 style="
+    float: right;
+    margin-top: -29px;
+    margin-right: 37px;
+">Count : {{studentList.length}}</h4>
+		</div>
+
+		<div class="box-body">
+
+			<div class="form-group">
+				<label class="pull-left">Route</label>
+				<div class="col-md-3 col-xs-6">
+					<select name="routeId" ng-model="routeName"
+						ng-change="getrootValue(routeName)" class="form-control">
+						<option value="">All Routes</option>
+						<option ng-repeat="routeModel in routeList"
+							value="{{routeModel.routeName}}">{{routeModel.routeName}}</option>
+					</select>
+				</div>
+     <div class="col-md-2" style="margin-top: -6px;">
+				
+         <input type="checkbox" id="senior" name="chk[]" ng-model="checkboxes[0]" ng-click="click(checkboxes);" /> <lable style="vertical-align: top;margin-left: 5px;">Senior</<lable>
+         &nbsp;<input type="checkbox" id="junior" name="chk[]" ng-model="checkboxes[1]" ng-click="click(checkboxes);" /><lable style="vertical-align: top;margin-left: 5px;">Junior</lable>
+         <br>
+          <input type="checkbox" id="approved" name="chk[]" ng-model="checkboxes[2]" ng-click="click(checkboxes);" /><lable style="vertical-align: top;margin-left: 5px;">Approved</lable>
+         &nbsp;<input type="checkbox" id="disapproved" name="chk[]" ng-model="checkboxes[3]" ng-click="click(checkboxes);" /><lable style="vertical-align: top;margin-left: 5px;">Disapproved</lable>
+     
+     
+   
+				</div>
+				
+				<div class="col-md-2">
+					<button class="btn btn-primary" ng-click="downloadStudentReport()">Export in Excel</button>
+				</div>
+				<div class="col-md-2">
+					<button class="btn btn-primary" ng-click="downloadStudentReportAllData()">Export Students Data</button>
+				</div>
+
+				<div class="col-md-2 col-xs-2 pull-right">
+					<ul id="menu">
+						<button href="#addStudentModal" ng-click="addStudent()"
+							data-toggle="modal" class="btn btn-primary form-control">Add Student</button>
+					</ul>
+				</div>
+
+			</div>
+			<div class="form-group" ng-show="successTextAlert || errorTextAlert">
+				<div class="col-md-12 col-xs-12 notification-center">
+					<div class="alert"
+						ng-class="{'alert-success': successTextAlert, 'alert-danger' : errorTextAlert}"
+						ng-show="successTextAlert || errorTextAlert">
+						<button type="button" class="close" ng-click="closeNotification()">x</button>
+						<strong>{{successTextAlert}}{{errorTextAlert}}</strong>
+					</div>
+				</div>
+			</div>
+
+<div style="height: 437px;overflow: scroll;width: 100%;">
+			<table id="dataTableGrid"
+				class="table table-bordered table-striped dt-responsive nowrap">
+				<thead>
+					<tr>
+
+						<th>Student Name</th>
+						<th>Parent Name</th>
+						<th>Admission No.</th>
+						<th>Class</th>
+						<th>Section</th>
+						<th>Summer Pickup Time</th>
+						<th>Drop Time</th>
+						<th>Route</th>
+						<th>Action</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						ng-repeat="student in studentList | orderBy:'firstName'" >
+
+						<td>{{student.firstName}} {{student.lastName}}</td>
+						<td>{{student.parentName}}</td>
+						<td>{{student.regId}}</td>
+						<td>{{student.studentClass}}</td>
+						<td>{{student.section}}</td>
+						<td>{{student.pickTimeSummer}}</td>
+						<td>{{student.drop}}</td>
+						<td>{{student.routeName}}</td>
+						<td><a href="javascript:void(0);"
+							ng-click="modifyStudentForm(student)"><i class="ion-edit"></i>Edit</a>
+							<a href="javascript:void(0);"
+							ng-click="approveStudent(student.identifier,student.isApproved)">
+								<i class="ion-edit"></i> {{student.isApproved == 'N' ? "Approve"
+								: "Disapprove"}}
+						</a></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+
+
+		<div id="addStudentModal" class="modal" tabindex="-1"
+			style="display: none;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true" ng-click="closePopup(student)">&times;</button>
+				<h4 class="modal-title">Add/Update Student</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<form name="studentForm" ng-submit="saveStudent()">
+
+
+							<table class="table" style="width:630px;">
+
+								<tbody>
+									<tr>
+										<td><label style="width: 100px;">First Name</label></td>
+										<td><input name="firstName" ng-required="true"
+											type="text" class="form-control" placeholder="First Name"
+											ng-model="student.firstName" style="width:156px;" /></td>
+										<td><label>Last Name</label></td>
+										<td><input name="lastName" ng-required="true" type="text"
+											class="form-control" placeholder="Last Name"
+											ng-model="student.lastName" style="width:156px;" /></td>
+									</tr>
+									<tr>
+										<td><label>Admission Number</label></td>
+										<td><input name="regId" ng-required="true" type="number"
+											class="form-control" placeholder="Admission Number"
+											ng-model="student.regId" style="width:156px;" /></td>
+										<td><label>Class</label></td>
+										<td>
+										<!--select name="stClass" ng-required="true"
+											class="form-control" ng-model="selectedClass"
+											ng-options="stClass as stClass for stClass in studentClass">
+												<option value="">Select Class</option>
+										</select-->
+										
+										<select ng-model="student.studentClass" style="width:126px;" ng-required="true">
+       										<option value="">--Select --</option>
+        									<option ng-repeat="sel in studentClass" ng-selected="student.studentClass == sel" value="{{sel}}">{{sel}}</option>
+    									</select>
+    
+    
+										</td>
+									</tr>
+									<tr>
+										<td><label>Section</label></td>
+										<td>
+										
+										<select ng-model="student.section" style="width:126px;" ng-required="true">
+      									  <option value="">--Select --</option>
+      									  <option ng-repeat="sel in studentSection" ng-selected="student.section == sel" value="{{sel}}">{{sel}}</option>
+    									</select>
+    
+										</td>
+										<td><label>Route</label></td>
+										<td>
+										
+										<select name="student.routeId" ng-model="student.routeId" style="width:126px;" ng-required="true" ng-change="loadWayPointByRoute()">
+        									<option value="">--Select --</option>
+        									<option ng-repeat="sel in routeList" ng-selected="student.routeId == sel.routeId" value="{{sel.routeId}}">{{sel.routeName}}</option>
+    									</select>
+										
+										</td>
+									</tr>
+									
+									<tr>
+										<td><label>Waypoint1</label></td>
+										<td colspan="4">
+										<div>
+    									<select name="student.wayPointId" ng-model="student.wayPointId" ng-change="loadDetailsByWayPoint()">
+											<option value="">---Select ---</option>
+											<option value="-1">No Valid WayPoint in the List</option>
+											<option ng-repeat="way in wayPointList" ng-selected="student.wayPointId == way.waypointId" value="{{way.waypointId}}">{{way.description}}</option>
+										</select>
+										<ul ng-show="detailsVisibility" style="list-style-type: none;">
+										<li style="float: left;"  ng-repeat="students in wayPointStudentsList track by $index" ng-hide="last">{{students.firstName}} {{students.lastName}},&nbsp; &nbsp;
+										 <span ng-show="$last"> & &nbsp;{{students.firstName}} {{students.lastName}}</span>
+									 	</li>
+										</ul> 
+    									</div>
+										</td>
+										
+    								</tr>
+									<tr ng-show="detailsVisibility"> 
+										<td><label>Pickup Time</label></td>
+										<td><option name="pickTime" type="text"
+											class="form-control" placeholder="Select WayPoint"
+											ng-model="student.pickTime" style="width:156px;"
+											ng-repeat="wayDetails in wayPointDetails" disabled="true" value="{{wayDetails.timePick}}" >{{wayDetails.timePick}}</option>
+										</td> 
+																						
+										<td><label>Drop Time</label></td>
+										<td><option name="dropTime" type="text"
+											class="form-control" placeholder="Select WayPoint"
+											ng-model="student.dropTime" style="width:156px;" 
+											ng-repeat="wayDetails in wayPointDetails" disabled="true" value="{{wayDetails.timeDrop}}" >{{wayDetails.timeDrop}}</option>
+										</td>
+									</tr>
+									
+									<!-- <tr>
+										<td ><label>Students on this WayPoint: </label></td>
+										<td colspan="4">
+											<ul style="list-style-type: none;">
+												<li style="float: left;"  ng-repeat="students in wayPointStudentsList track by $index" ng-hide="last">{{students.firstName}} {{students.lastName}},&nbsp; &nbsp;
+												 <span ng-show="$last"> & &nbsp;{{students.firstName}} {{students.lastName}}</span>
+											 	</li>
+											</ul> 
+										</td>
+									</tr> -->
+
+									<!-- <tr>  
+										<td><label style="margin-top: 40px;">Drop Time</label></td>
+										<td><timepicker name="dropTime" ng-required="true"
+												ng-model="student.drop" show-meridian='showMeridian'  /></td>
+									</tr> -->
+
+									<tr >
+										<td colspan="4"><button type="button" data-dismiss="modal"
+												class="btn btn-primary" style="margin-right: 10px;" ng-click="closePopup(student)">Cancel</button><button type="submit"
+												ng-disabled="studentForm.$invalid" class="btn btn-primary">Save</button></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="modal-footer"></div> -->
+		</div>
+
+	</div>
+</div>

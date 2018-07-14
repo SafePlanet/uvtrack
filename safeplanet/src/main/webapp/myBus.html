@@ -1,0 +1,207 @@
+<!-- <div class="col-md-6" style="padding:1px; background-color: #000000;">
+
+   <div id="map" style="height: 400px;"></div>
+
+</div> -->
+
+<style>
+    #mapDivId {
+          height: 90vh;
+  background-color:#FFFFF0 !importnant;
+  font-family: monospace;
+  padding: 2rem;
+    }
+
+    .panel-wrap {
+        width: 350px;
+        display: inline;
+        position: absolute;
+        z-index: 9;
+        margin-left: 5px;
+    }
+
+    .panel-success > .panel-heading, .panel-success > form > .panel-heading {
+        color: white;
+        background-color: #67C8FF;
+        border-color: #98FB98;
+        padding: 5px 15px;
+    }
+    
+    .content {
+	padding: 0px 15px;
+	background: #f9f9f9;
+}
+
+    .panel-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 15px;
+    }
+
+    .panel-options {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+    }
+
+    .leaflet-control-zoom {
+        float: right!important;
+        margin-right: 15px!important;
+        margin-top: 65px!important;
+    }
+
+    .leaflet-top.leaflet-left {
+        right: 0;
+    }
+
+    table.my-buses tr{
+        cursor:pointer;
+    }
+    table.my-buses tr.selected{
+            outline: 1px solid #3c8dbc;
+    }
+    .panel-my-buses .panel-body{
+        padding:0;
+        overflow-y:scroll;
+        overflow-x:hidden;
+    }
+    .panel-my-buses .my-buses-wrapper{
+        padding:15px;
+    }
+    .panel-my-buses .panel-body{
+        max-height:500px;
+        transition: max-height 0.25s ease-in;
+    }
+    .panel-my-buses.collapsed .panel-body{
+        overflow:hidden!important;
+        max-height:0;
+        transition: max-height 0.15s ease-out;
+    }
+    .panel-my-buses .panel-options a{
+        color:#fff!important;
+    }
+	
+	html , body {
+    overflow-y: hidden;
+}
+.green {
+   /*  background-color: #a1f442 !important; */ 
+   background-color:#DEFCD9 !important;
+}
+
+.red {
+    background-color: #FCDFD9 !important;
+}
+
+.yellow {
+    background-color: yellow !important;
+}
+.panel-options {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+}
+
+.panel-title {
+text-align:center;
+}
+
+
+
+
+/* #map {
+	height: 100%;
+}
+
+h1 {
+	display: none;
+}
+
+html, body {
+	height: 100%;
+	margin: 0px;	
+}
+
+main {
+	height: 100%;
+}
+
+section {
+	height: 100%;
+} */
+
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale {
+    font-size: 11px;
+    display: none;
+}
+
+</style>
+
+<script>
+    function changeColor(o){
+    	debugger;
+        o.style.backgroundColor=(o.style.backgroundColor=='red')?('transparent'):('red');
+    }
+</script>
+
+<div class="col-md-12 col-part-left" style="padding:1px;border: 6px double;">
+
+    <div class="panel-wrap panel-my-buses" ng-class="{'collapsed':collapsed}" id="panel-wrap" data-num="1">
+        <div class="row">
+            <div class="col-sm-12">
+                <form class="hotel-booking-form" action="/Partners/TrackAndBook" method="post" novalidate="novalidate">
+                    <input name="__RequestVerificationToken" type="hidden" value="kEtvpUbf1B84zqzHOziHRDB6mK8OcJOm-imr_vOO0lxN5S4JTb0nsU57S-etyUzYTyvnZKPRN7-pGIWHhB0U-eS7apolHj0pzAm5hQtHWXWRhzFzQEtIveOdiIMN-D3T0">
+                    <div class="panel panel-success" style="margin-left: -6px;" >
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Fleet</h4>
+                            <div class="panel-options">
+                                <a href="" data-rel="collapse" ng-show="!collapsed" ng-click="collapsed=!collapsed"><i class="fa fa-fw fa-minus"></i></a>
+                                <a href="" data-rel="collapse" ng-show="collapsed" ng-click="collapsed=!collapsed"><i class="fa fa-fw fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="panel-body" id="panel-body">
+                           <div class="my-buses-wrapper" >
+						   
+						  <!--   Last Update:<input type="checkbox" ng-model="lastUpdate"/> -->
+                               <table class="table table-bordered my-buses" id="data" >
+                                   <thead>
+                                       <tr class="success">
+                                           <th style="color: EFEFEF;">Name</th>
+                                           
+                                           <th ng-show="lastUpdate" style="color: EFEFEF;">Last Updated</th>
+                                       </tr>
+                                   </thead>
+                                   <tr ng-if="busy">
+                                       <td colspan="2">
+                                           <div class="text-center">
+                                               <i class="fa fa-spin fa-spinner"></i>
+                                               <label class="block">Loading your buses</label>
+                                           </div>
+                                       </td>
+                                   </tr>
+                                   <tr  class="success" ng-click="locateBus(bus)" ng-class="{'selected':selectedBus.id==bus.id}" ng-repeat="bus in buses">
+                                       <td  ng-class="{'green':bus.status=='online','red':bus.status=='offline','yellow':bus.status=='unknown'}" style="font-size:15px;">
+                                           {{bus.name||'No name'}}
+                                       </td>
+                                       
+                                       <td ng-show="lastUpdate" ng-class="{'green':bus.status=='online','red':bus.status=='offline','yellow':bus.status=='unknown'}" style="font-size:15px;" >{{bus.lastUpdate | timeAgo }}</td>
+                                      
+                                   </tr>
+                               </table>
+                           </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+ <!--  <leaflet center="india" layers="layers" markers="markers" id="mapDivId"></leaflet> -->
+  <section>
+            <div id="map" style=" height: 90vh;
+  background-color:#FFFFF0 !importnant;
+  font-family: monospace;
+  padding: 2rem">
+            </div>
+        </section>
+</div>

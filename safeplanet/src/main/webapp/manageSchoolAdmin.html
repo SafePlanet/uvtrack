@@ -1,0 +1,231 @@
+
+
+<style>
+ul#menu {
+	padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+	display: inline;
+}
+
+ul#menu li a {
+	background-color: #3CA4D8;
+	color: white;
+	padding: 5px 12px;
+	text-decoration: none;
+	border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+	background-color: grey;
+}
+ @media screen and (min-width: 700px) {
+        .modal {
+          width: 700px; /* New width for large modal */
+        }
+</style>
+
+<div class="col-md-12 col-part-left" style="max-height: 500px; overflow-y: auto;">
+	<div class="box box-primary">
+		<div class="box-header">
+			<h3 class="box-title">Manage Administrator</h3>
+			<div class="pull-right addbutton">
+				<ul id="menu">
+					<button href="#addUserModal" data-toggle="modal" ng-click="initAddUser()" class="btn btn-primary form-control">Add Admin</button>
+				</ul>
+			</div>
+			<div class="form-group" ng-show="successTextAlert || errorTextAlert">
+				<div class="col-md-12 col-xs-12 notification-center">
+					<div class="alert" ng-class="{'alert-success': successTextAlert, 'alert-danger' : errorTextAlert}" ng-show="successTextAlert || errorTextAlert">
+						<button type="button" class="close" ng-click="closeNotification()">x</button>
+						<strong>{{successTextAlert}}{{errorTextAlert}}</strong>
+					</div>
+				</div>
+			</div>			
+		</div>
+		<div class="box-body">
+		
+			<div class="form-group"></div>	
+			<table id="dataTableGrid" class="table table-bordered table-striped dt-responsive nowrap">
+				<thead>
+					<tr>
+						
+						<th>User Name</th>
+						
+						<th>Address</th>
+						<th>Phone</th>
+						<th>Email</th>
+						
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr ng-repeat="user in adminList ">
+						
+						<td>{{user.name}}</td>
+						
+						<td>{{user.address}}</td>
+						<td>{{user.mobileNumber}}</td>
+						<td>{{user.emailAddress}}</td>
+						<td><a href="javascript:void(0);" ng-click="editUserForm(user.identifier)">
+								<i class="ion-edit"></i> Edit
+							</a> &nbsp;|&nbsp; 
+							
+							<a href="javascript:void(0);" ng-click="deactivateUser(user.identifier,'enable')" ng-show="user.isEnable==0">
+								<i class="ion-edit"></i>
+								 Activate </a>
+						
+<a href="javascript:void(0);" ng-click="deactivateUser(user.identifier,'disable')" ng-show="user.isEnable!=0">
+								<i class="ion-edit"></i>
+								 Deactivate</a>
+												
+								
+								
+								</td>
+					</tr>
+				
+				</tbody>
+			</table>
+
+			<div id="editUserModal" class="modal fade" tabindex="-1" style="display: none;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Edit Admin</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<form name="userForm" ng-submit="submitAdminForm()">
+								<div class="form-group">
+								<table style="width:630px;height:250px;" cellpadding="10">
+								
+								      <tr>
+									       <td><label>First Name</label></td> <td><input type="text" class="form-control" ng-required="true" placeholder="First Name" ng-model="userData.firstName " /></td>
+										   <td><label style="margin-left:10px;">Last Name</label></td> <td><input type="text" class="form-control" ng-required="true" placeholder="Last Name" ng-model="userData.lastName " /></td>    
+										   
+									  </tr>
+									 <tr>
+									       <td><label>House No</label></td> <td><input type="text" class="form-control" ng-required="true" placeholder="Address" ng-model="userData.houseNo " /></td>    
+										   <td><label style="margin-left:10px;">Address</label></td> <td><input type="text" class="form-control" ng-required="true" placeholder="Address" ng-model="userData.address " /></td>    
+										  
+									  </tr>
+									  <tr> 
+									  <td><label >State</label></td> <td><select ng-change="loadCityByState()"  class="form-control" ng-model="userData.selectedState">
+									                                      	<option value="">Select State</option>
+									                                      	<option ng-repeat="state in statesList" value="{{state.stateId}}">{{state.stateName}}    
+													</option>
+									                                        </select> </td>
+									   
+									       <td> <label style="margin-left:10px;">City</label></td> <td>	    <select  class="form-control" ng-model="userData.selectedCity">
+									       <option value="">Select City</option> 
+													<option ng-repeat="city in cityList" value="{{city.cityName}}">{{city.cityName}} </option></select></td>
+									       
+									
+									  </tr><tr>
+									  <td><label>Pin Code</label></td> <td><input type="text" numbers-only maxlength="6" class="form-control" ng-required="true" placeholder="pinCode" ng-model="userData.pinCode" /></td> 
+									 
+									       <td><label style="margin-left:10px;">Phone</label></td><td><input type="text" numbers-only maxlength="10" class="form-control" placeholder="Phone" ng-required="true" ng-model="userData.mobile " /></td>
+										   
+									  </tr>
+									  <tr>
+									      <td><label>Email </label></td><td><input type="email" spi-email class="form-control" ng-required="true" placeholder="Email" ng-model="userData.emailAddress " /></td></td>
+									  </tr>
+								</table>
+							
+									<input type="hidden" ng-model="userData.userUUID">
+									<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+									<button type="submit" class="btn btn-primary">Save</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+		</div>
+
+		<div id="addUserModal" class="modal fade" tabindex="-1" style="display: none;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Add Admin</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-8 col-xs-12">
+						<form name="userForm" ng-submit="addAdmin()">
+							<div class="form-group">
+							
+							<table style="width:630px;height:250px;" cellpadding="10">
+								<tr>
+								    <td><label>School</label> </td>
+								    <td>
+								    <select  class="form-control" ng-model="userData.selectedSchool" >
+									                                       <option value="">Select School</option> 
+												<option ng-repeat="school in schoolList" value="{{school.id}}">{{school.name}}    
+												</option> </select>
+								    </td>
+								    
+								</tr>
+							
+								      <tr>
+									       <td><label>First Name</label></td> <td><input type="text" name="firstName" ng-required="true"  class="form-control" placeholder="First Name" ng-model="userData.firstName" /></td>
+										   <td><label style="margin-left:10px;">Last Name</label></td> <td>	<input type="text" name="lastName" ng-required="true"  class="form-control" placeholder="Last Name" ng-model="userData.lastName" /></td>    
+										   
+									  </tr>
+									 <tr>
+									      
+										   <td><label>House No</label></td> <td><input type="text" name="houseNo" ng-required="true"  class="form-control" placeholder="houseNo" ng-model="userData.houseNo" /></td>    
+										    <td><label style="margin-left:10px;">Address</label></td> <td><input type="text" class="form-control" ng-required="true"  placeholder="Address" ng-model="userData.address " /></td>    
+										   
+									  </tr>
+									  <tr>
+									        
+									        <td><label>State</label></td>
+									  <td>
+									    <select  class="form-control" ng-model="userData.selectedState" ng-change="loadCityByState()" > <option value="">Select State</option> 
+													<option ng-repeat="state in statesList" value="{{state.stateId}}">{{state.stateName}}    
+													</option> </select>
+									   </td>
+									       <td> <label style="margin-left:10px;">City</label></td>  <td>	    <select  class="form-control" ng-model="userData.selectedCity">
+									       <option value="">Select City</option> 
+													<option ng-repeat="city in cityList" value="{{city.cityName}}">{{city.cityName}} </option></select></td>
+									       
+									
+									  </tr>
+									  
+									  <tr>
+									  <td><label>Pin Code</label></td> <td><input type="text" numbers-only maxlength="6" class="form-control" ng-required="true"  placeholder="pinCode" ng-model="userData.pinCode " /></td>
+									 
+									        
+									       <td><label style="margin-left:10px;">Phone</label></td><td><input type="text" numbers-only maxlength="10" class="form-control" placeholder="Phone" ng-required="true"  ng-model="userData.mobile " /></td>
+										   
+									  </tr>
+									  <tr>
+									      <td><label >Email </label></td><td><input type="email" spi-email class="form-control" ng-required="true"  placeholder="Email" ng-model="userData.emailAddress " /></td></td>
+									  </tr>
+								</table>
+							
+								
+								<input type="hidden" ng-model="userData.userUUID">
+								<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+								<button type="submit"  class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer"></div>
+		</div>
+	</div>
+
+	<div class="box-footer">
+		<div class="alert alert-success" ng-show="showSuccessAlert">
+			<button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button>
+			<strong></strong>{{successTextAlert}}
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,174 @@
+
+<div class="col-md-12 col-part-left" style="max-height: 480px; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+    <div class="box box-success">
+        <div class="box-header">
+            <h3 class="box-title">Mark Attendance</h3>
+        </div>
+        <div class="box-body chat" id="chat-box">
+            <div class="alert alert-success" ng-show="showSuccessAlert">
+                <button type="button" class="close"data-ng-click="switchBool('showSuccessAlert')">x</button>
+                <strong></strong>{{successTextAlert}}
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <div>
+                                <div class="form-group">
+                                    <label>Route</label>
+                                    <select class="form-control" ng-model="selectedRoute">
+                                        <option value="">Select Route</option>
+                                        <option ng-repeat="route in routes" value="{{route.routeId}}" ng-bind="route.routeName"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="btn-group input-group btn-group-justified"
+                                 data-toggle="buttons">
+                                <label class="btn"
+                                       ng-class="{'btn-primary':isMorning,'btn-default':!isMorning}"
+                                       ng-click="isMorning=true">
+                                    <input type="checkbox"
+                                           name="options" id="option1" />Morning
+                                </label> <label class="btn"
+                                                ng-class="{'btn-primary':!isMorning,'btn-default':isMorning}"
+                                                ng-click="isMorning=false">
+                                    <input type="checkbox"
+                                           name="options" id="option2" />Afternoon
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <p class="message"></p>
+           <div class="row">
+               <div class="student-list-attendence col-sm-4">
+               <label class="lbl-title" ng-if="!isMorning">Student present from Morning:</label>
+               <span ng-if="students.length==0" class="block text-center m-b-20">No students found for this route</span>
+                   <div class="row" ng-repeat="student in students |orderBy :'firstName'"
+                        style="margin-top: 10px;">
+                       <div class="col-md-5">
+                           <p>
+                               <a href="" class="name" ng-bind="student.firstName+' '+student.lastName">
+                               </a>
+                           </p>
+                       </div>
+                       <div class="col-md-4">
+                           <b>[{{student.studentClass}} - {{student.section}}]</b>
+                       </div>
+                       <div class="col-md-3">
+                           <button class="btn btn-primary btn-sm btn-flat pull-right"
+                                   ng-click="markPresence(student,'I')" ng-if="student.presentFlag!='A' && isMorning"
+                                   ng-disabled="student.presentFlag=='I'">
+                               IN
+                           </button>
+                           <button class="btn btn-primary btn-sm btn-flat pull-right"
+                                   ng-click="markPresence(student,'O')" ng-if="!isMorning"
+                                   ng-disabled="student.presentFlag=='O'">
+                               OUT
+                           </button>
+                           <label class="alert-danger pull-right" ng-if="student.presentFlag=='A' && isMorning" title="{{student.absentReason}}" style="padding: 2px 10px;">Absent</label>
+                       </div>
+                   </div>
+                   
+                   
+                    <div ng-if="!isMorning" class="m-t-5">
+                    <label class="lbl-title">Other Students:</label>
+                   <div class="row" ng-repeat="student in otherStudents |orderBy :'firstName'"
+                        style="margin-top: 10px;">
+                       <div class="col-md-5">
+                           <p>
+                               <a href="" class="name" ng-bind="student.firstName+' '+student.lastName">
+                               </a>
+                           </p>
+                       </div>
+                       <div class="col-md-4">
+                           <b>[{{student.studentClass}} - {{student.section}}]</b>
+                       </div>
+                       <div class="col-md-3">
+                           <button class="btn btn-primary btn-sm btn-flat pull-right"
+                                   ng-click="markPresence(student,'I')" ng-if="student.presentFlag!='A' && isMorning"
+                                   ng-disabled="student.presentFlag=='I'">
+                               IN
+                           </button>
+                           <button class="btn btn-primary btn-sm btn-flat pull-right"
+                                   ng-click="markPresence(student,'O')" ng-if="!isMorning && student.presentFlag!='A'"
+                                   ng-disabled="student.presentFlag=='O'">
+                               OUT
+                           </button>
+                           <label class="alert-danger pull-right" ng-if="student.presentFlag=='A'" title="{{student.absentReason}}" style="padding: 2px 10px;">Absent</label>
+                       </div>
+                   </div>
+                    
+                    </div>
+               </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            display: none;
+        }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
