@@ -3,8 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spi</groupId>
-	<artifactId>safeplanet</artifactId>
-	<name>safeplanet</name>
+	<artifactId>uvtrack</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -512,7 +511,7 @@
 				<version>2.4</version>
 				<configuration>
 					<!-- <warSourceDirectory>webapp</warSourceDirectory> -->
-					<warName>safeplanet</warName>
+					<warName>uvtrack</warName>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
@@ -538,4 +537,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	<name>UvTrack</name>
 </project>
