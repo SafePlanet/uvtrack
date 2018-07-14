@@ -1,0 +1,6 @@
+
+<div class="col-lg-2 col-xs-4" style="padding-bottom: 18px; border:1; height: 104px !important;" ng-repeat="link in dashboardLinks.linksList">
+	<a href="{{getLink($index)}}"> <img ng-src="{{dashboardLinks.iconsList[$index]}}" class="img-rounded" alt="{{dashboardLinks.linksNameList[$index]}}" style="width: 60px; height: 60px;"> <br>
+	<div class="col-centered" style="color: #428B0A; max-width: 60px; font-size: 13px; text-align: center; font-weight: bold;">{{dashboardLinks.linksNameList[$index]}}</div>
+	</a>
+</div>

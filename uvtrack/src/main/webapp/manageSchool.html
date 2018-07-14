@@ -1,0 +1,210 @@
+
+<style>
+  .error {
+      color: red;
+    }
+
+ul#menu {
+    padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+    display: inline;
+}
+
+ul#menu li a {
+    background-color: #3CA4D8;
+    color: white;
+    padding: 5px 12px;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+    background-color: grey;
+}
+</style>
+
+<div class="col-md-12 col-part-left" style="max-height:480px; overflow-y:auto; -webkit-overflow-scrolling: touch;">
+    <div class="box box-primary">
+        <div class="box-header">
+            <h3 class="box-title">Manage Schools </h3>
+        </div>
+        
+        <div class="pull-right">
+            <ul id="menu">
+                <li><a href="javascript:void(0);" ng-if="user.role=='superAdmin'" ng-click="addSchoolFormModal()">Add School</a></li>
+            </ul>
+        </div>
+        
+        
+            <div class="box-body">
+                 <table id="dataTableGrid" class="table table-bordered table-striped dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>School Name</th>
+                            <th>Address</th>
+                            <th>Email</th>
+                            <th>Phone 1</th>
+                            <th>Service StartDate</th>
+                            <th>Service EndDate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        <tr ng-repeat="school in schoolList">
+                            <td>{{school.name}}</td>
+                            <td>{{school.displayAddress}}</td>
+                            <td>{{school.emailId}}</td>
+                            <td>{{school.phoneNumber1}}</td>
+                            <td>{{school.serviceStartDate | date : "dd-MM-y "}}</td>
+                            <td>{{school.serviceStartDate | date : "dd-MM-y "}}</td>
+                            <td>
+                                <a href="javascript:void(0);" ng-click="modifySchoolForm(school.id)"><i class="ion-edit"></i> Edit</a>
+                            </td>
+                        </tr>
+               
+                    </tbody>
+                </table>
+
+			<div id="addSchoolModal"  class="modal fade" tabindex="-1"
+				data-width="960" style="display: none;" data-height="400" >
+				<div  class="modal-header"  >
+					<button type="button"  class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Add/Update School Details</h4>
+				</div>
+				<div class="modal-body" style="width: 930px; height: 350px;">
+					<div class="row">
+						<div class="col-md-6">
+							<form name="schoolDetailsForm" ng-submit="submitSchoolForm()">
+								<div class="form-group">
+								<input type="hidden" ng-model="schoolData.schoolID"/>
+									<table  cellpadding="20" style="width: 890px; height: 350px;">
+										<tr>
+											<td> <label>School Name</label> </td> 
+											<td> <input type="text" class="form-control" placeholder="School Name" ng-model="schoolData.name" /></td>
+											<td style="padding: 10px;"> <label>Email</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Email" ng-model="schoolData.emailId" /></td>
+										</tr>
+										<tr>
+											<td> <label>Subscription Type</label> </td> 
+											<td><select name="subType" ng-model="schoolData.subType" class="form-control" ng-disabled="subTypeExpression">
+											<option value="">Select Subscription</option>
+											<option value="month">Month</option>
+											<option value="3month">3Month</option>
+											<option value="3month">6Month</option>
+											<option value="3month">Year</option>
+											</select> </td>
+											<td style="padding: 10px;"> <label>Subscription Amount</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Amount in INR per Device" ng-model="schoolData.subAmount" ng-disabled="subAmountExpression"/></td>
+										</tr>
+										<tr>
+											<td> <label>Service StartDate</label> </td> 
+											<td> <input type="date" class="form-control" placeholder="Service StartDate" ng-model="schoolData.startDate" ng-disabled="startDateExpression"/></td>
+											<td style="padding: 10px;"> <label>Service EndDate</label> </td>
+											<td> <input type="date" class="form-control" placeholder="Service End Date" ng-model="schoolData.endDate" ng-disabled="endDateExpression" /></td>
+										</tr>
+
+										<tr>
+											<td> <label>Display Address</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Display Address" ng-model="schoolData.displayAddress" /></td>
+											<td style="padding: 10px;"> <label>Phone Number 1</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Phone Number 1" name="phoneNumber1" ng-model="schoolData.phoneNumber1" required maxlength=10 onkeyup="this.value = this.value.replace(/[^0-9]/, '')" />
+											
+											</td>
+										</tr>
+
+										<tr>
+											<td> <label>Phone Number 2</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Phone Number 2" ng-model="schoolData.phoneNumber2" name="phoneNumber2" required maxlength=10 onkeyup="this.value = this.value.replace(/[^0-9]/, '')"  />
+											
+											</td>
+											<td style="padding: 10px;"> <label>Phone Number 3</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Phone Number 3" ng-model="schoolData.phoneNumber3" name="phoneNumber3" required maxlength=10  onkeyup="this.value = this.value.replace(/[^0-9]/, '')" />
+											 
+											
+											</td>
+										</tr>
+
+										<tr>
+											<td> <label>Address Line 1</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Address Line 1" ng-model="schoolData.addressLine1" /></td>
+											<td style="padding: 10px;"> <label>Address Line 2</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Address Line 2" ng-model="schoolData.addressLine2" /></td>
+										</tr>
+
+										<tr>
+											<td> <label>State</label> </td> </td>
+											 <td>
+									    <select  class="form-control" ng-model="schoolData.selectedState" ng-change="loadCityByState()" > <option value="">Select State</option> 
+													<option ng-repeat="state in statesList" value="{{state.stateId}}">{{state.stateName}}    
+													</option> </select>
+									   </td>
+											
+											
+											<td style="padding: 10px;"> <label>City</label></td>
+									
+									 <td ng-show="schoolData.state == null">
+									    <select  class="form-control" ng-model="schoolData.selectedCity" > <option value="">Select City</option> 
+													<option ng-repeat="cityList in cityList" value="{{cityList.cityId}}">{{cityList.cityName}}    
+													</option> </select>
+									   </td> 
+									  
+									
+										   <td ng-show="schoolData.state == 'Uttar Pradesh'">
+									    <select  class="form-control" id="city" ng-model="schoolData.selectedCity"> <option value="">Select City</option> 
+													<option value="1">Agra</option> 
+													<option value="2">Mathura</option> 
+													<option value="3">Meerut</option> 
+													<option value="4">Ghaziabad</option> 
+													<option value="5">Noida</option>
+													<option value="6">Gr. Noida</option> 
+										</select>
+									   </td>
+									   
+									   
+									     <td ng-show="schoolData.state == 'New Delhi'">
+									    <select  class="form-control" id="city" ng-model="schoolData.selectedCity"> <option value="">Select City</option> 
+													<option value="1">South Delhi</option> 
+													<option value="2">North Delhi</option> 
+													<option value="3">East Delhi</option> 
+													<option value="4">West Delhi</option> 
+													<option value="5">Old Delhi</option>
+									</select>
+									   </td>
+										</tr>
+										<tr>
+											<td> <label>Pin Code</label> </td>
+											<td> <input type="text" class="form-control" placeholder="Pin Code" ng-model="schoolData.pinCode" /></td>
+										</tr>
+										<tr>
+									    <td>
+										<button type="button" data-dismiss="modal"
+											class="btn btn-primary">Cancel</button>
+										</td>
+										
+										<td>
+										<button type="submit" class="btn btn-primary">Save</button>
+										</td>
+									</tr>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer"></div>
+			</div>
+
+		</div>
+
+            <div class="box-footer">
+                <div class="alert alert-success" ng-show="showSuccessAlert">
+                    <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button> <strong></strong>{{successTextAlert}}
+                </div>
+            </div>
+        
+    </div>
+</div>

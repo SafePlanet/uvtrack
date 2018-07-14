@@ -1,0 +1,116 @@
+<style>
+ul#menu {
+	padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+	display: inline;
+}
+
+ul#menu li a {
+	background-color: #3CA4D8;
+	color: white;
+	padding: 5px 12px;
+	text-decoration: none;
+	border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+	background-color: grey;
+}
+</style>
+
+<div class="col-md-12 col-part-left">
+	<div class="box box-primary">
+		<div class="col-md-6 box-body">
+			<h4 class="box-title">Send Message</h4>
+			
+			<div style="margin-top: -32px;margin-left:155px;">
+				<label class="">Sms</label> 
+						<input type="checkbox" class="smscheckbox" style="margin-left: 8px" ng-model="SendSms" ng-true-value="true"  /> 
+			</div>
+			<div style="margin-top: -28px;margin-left: 222px;">
+				<label class="">App</label> 
+						<input type="checkbox" class="smscheckbox" style="margin-left: 8px" ng-model="AppSms" ng-true-value="true" /> 
+			</div>
+	
+		<br>
+			<form role="form">
+
+				<div class=form-group>
+					<div class="col-md-12 alert" ng-class="{'alert-success': showSuccessAlert, 'alert-danger' : showErrorAlert}" ng-show="showSuccessAlert || showErrorAlert">
+						<button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button>
+						<strong></strong>{{successTextAlert}}{{showErrorAlert}}
+					</div>
+				</div>
+				<div class="form-group"><label>SMS Type</label></div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<select name="messageTemplateId"
+								ng-model="messageTemplateId" class="form-control" ng-change="showSampleMessage()">
+								<option value="">SMS Type</option>
+								<option ng-repeat="messageTemplateVM in allSmsTemplateList"
+								value="{{messageTemplateVM.id}}">{{messageTemplateVM.name}}</option>
+							</select>
+						</div>
+					</div>
+					<br>
+						
+					<div class="col-sm-6" style="width:50%;">
+						<div class="form-group">
+						<div style="margin-top: -17px;margin-left: -10px;">
+							<label class="">Send Message to All?</label> 
+		 						<input type="checkbox" class="smscheckbox" style="margin-left: 15px" ng-model="sendToAll" name="sendToAll" ng-change="selectAllMsg()"/> 
+						</div>
+						</div>
+					</div>
+				</div>
+			
+				<div>{{selectedMessageTemplate.sampleMessage}}</div>
+				
+				
+				
+				<div class="form-group">
+					<label>Route</label> 
+						<select name="routeId" ng-model="routeId" class="form-control" ng-disabled="disableRoute" ng-change="loadScheduleByRoute()">
+							<option value="" >Select Route</option>
+							<option ng-repeat="routeModel in routeList" value="{{routeModel.uuid}}">{{routeModel.routeName}}</option>
+						</select>
+
+				</div>
+				<div class="form-group">
+					<label>Student</label> 
+						<select name="studentId" ng-model="studentId" class="form-control" ng-disabled="disableStudent" ng-change="changeSchedule()">
+							<option value="" >Select Student</option>
+							<option value="1" >All student</option>
+							<option ng-repeat="student in studentList" value="{{student.studentId}}">{{student.firstName}} {{student.lastName}}</option>
+						</select>
+
+				</div>
+				<div class="form-group">
+					<label>Schedule</label> 
+						<select name="scheduleId" ng-model="scheduleId" class="form-control" ng-disabled="disableSchedule">
+							<option value="">Select Time</option>
+							<option ng-repeat="schedule in scheduleList" value="{{schedule.routeId}}">{{schedule.startTime}}-{{schedule.endTime}}</option>
+						</select>
+				</div>
+
+				<div class="form-group" ng-show="messageTemplateId=='1001'">
+					<label>Message</label>
+						<textarea class="form-control" rows="2" maxlength="119" id="message" ng-model="message" name="message"></textarea>
+				</div>
+
+				<div class="form-group">
+					<div style="margin-top:10px">
+						<button type="submit" class="btn btn-primary" ng-click="sendMessage()" ng-disabled="disableButton" >Send</button>
+						<!-- <button type="submit" class="btn btn-primary" ng-click="refresh()"  >Refresh</button> -->
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+</div>

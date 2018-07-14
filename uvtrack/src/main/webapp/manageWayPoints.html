@@ -1,0 +1,139 @@
+
+<style>
+ul#menu {
+    padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+    display: inline;
+}
+
+ul#menu li a {
+    background-color: #3CA4D8;
+    color: white;
+    padding: 5px 12px;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+    background-color: grey;
+}
+</style>
+
+<div class="col-md-12 col-part-left" style="max-height:480px; overflow-y:auto; -webkit-overflow-scrolling: touch;">
+    <div class="box box-primary">
+        <div class="box-header">
+            <h3 class="box-title">Manage Way-Points </h3>
+        </div>
+        <div class="pull-right">
+            <ul id="menu">
+                <li><a href="javascript:void(0);" ng-click="addWayPointFormModal()">Add WayPoint</a></li>
+                <li><a href="#manageRoutes.html">Manage Routes</a></li>
+                <li><a href="#addStudentRoute.html">Student Route</a></li>
+                <li><a href="#manageBusRoute.html">Bus Route</a></li>
+            </ul>
+        </div>
+        
+            <div class="box-body">
+                 <table id="dataTableGrid" class="table table-bordered table-striped dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th>Sequence Number</th>
+                            <th>WayPoint Name</th>
+                            <th>Student Name/s</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Pick Time</th>
+                            <th>Drop Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="wp in wayPoints">
+                            <td ng-bind="wp.sequenceNumber"></td>
+                            <td ng-bind="wp.name"></td>
+                            <td ng-bind="wp.studentNames"></td>
+                            <td ng-bind="wp.lattitude"></td>
+                            <td ng-bind="wp.longitude"></td>
+                            <td ng-bind="wp.timePick"></td>
+                            <td ng-bind="wp.timeDrop"></td>
+                            <td><a href="javascript:void(0);" ng-click="modifyWayPointForm(wp.id)" ><i class="ion-edit"></i> Edit</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div id="addWayPointModal" class="modal fade" tabindex="-1" data-width="760" style="display: none;">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Add/Update WayPoint</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <form name="routeForm" ng-submit="submitWayPointForm()">
+                                        <div class="row">
+                                        <div class="col-sm-6">
+                                         <div class="form-group">
+                                          <label>WayPoint Name</label>
+                                                    <input type="text" class="form-control" placeholder="Route Name" ng-model="wayPointData.name"/>
+                                         </div>
+                                         
+                                         <div class="form-group">
+                                           <label>Sequence Number</label>
+                                                    <input type="text" ng-readonly="!isEditMode" class="form-control" placeholder="Sequence Number" ng-model="wayPointData.sequenceNumber"/>
+                                          </div>
+                                         
+                                          <div class="form-group">
+                                          <label>Pick Time</label><br/>
+                                                    <input type="time" class="form-control" ng-model="wayPointData.picktime"/>
+                                          </div>
+                                        </div>
+                                         <div class="col-sm-6">
+                                         <div class="form-group">
+                                          <label>Latitude</label>
+                                                    <input type="text" class="form-control" placeholder="Latitude" ng-model="wayPointData.lattitude"/>
+                                                   
+                                         </div>
+                                          <div class="form-group">
+                                           <label>Longitude</label>
+                                                    <input type="text" class="form-control" placeholder="Longitude" ng-model="wayPointData.longitude"/>
+                                          </div>
+                                          
+                                          <div class="form-group">
+                                          <label>Drop Time</label><br/>
+                                                    <input type="time" class="form-control" ng-model="wayPointData.droptime"/>
+                                          </div>
+                                          
+                                         </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                            <div class="form-group">
+                                                   
+                                                    <input type="hidden" ng-model="wayPointData.wayPointUUID">
+                                                    <input type="hidden" name="routeUUID" id="routeUUID" value="{{routeId}}">
+                                                   
+ 				                                                   
+                                                    <button type="button" data-dismiss="modal" class="btn btn-inverse">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="alert alert-success" ng-show="showSuccessAlert">
+                    <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button> <strong></strong>{{successTextAlert}}
+                </div>
+            </div>
+        
+    </div>
+</div>

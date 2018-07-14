@@ -1,0 +1,63 @@
+<style>
+    ul#menu {
+        padding: 0;
+        margin-right: 10px;
+    }
+
+        ul#menu li {
+            display: inline;
+        }
+
+            ul#menu li a {
+                background-color: #3CA4D8;
+                color: white;
+                padding: 5px 12px;
+                text-decoration: none;
+                border-radius: 4px 4px 0 0;
+            }
+
+                ul#menu li a:hover {
+                    background-color: grey;
+                }
+
+    ul.schools-filter {
+        list-style: none;
+        margin-left: 10px;
+        padding: 0;
+    }
+</style>
+
+<div class="col-md-12 col-part-left"
+     style="max-height: 480px; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+    <div class="box box-primary">
+        <div class="box-header">
+            <h3 class="box-title">School Holidays</h3>
+        </div>
+
+        <div class="box-body">
+            <table id="holidayTableGrid" class="table table-bordered table-striped dt-responsive nowrap">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Description</th>
+                        <th>Holiday For</th>
+                    </tr>
+                </thead>
+
+                  <tr class="success" ng-repeat="holiday in schoolHolidays.holidays">
+                      <td>{{holiday.fromDate}}</td>
+                      <td>{{holiday.toDate}}</td>
+                      <td>{{holiday.description}}</td>
+                      <td>{{holiday.sjaFlag=='a'?'All':(holiday.sjaFlag=='s'?'Seniors':'Juniors')}}</td>
+                  </tr>
+					<div ng-repeat="holiday in schoolHolidays.holidays">
+						<b>From: </b>{{holiday.fromDate}} <b> To: </b>{{holiday.toDate}} <br>
+						<b>Description: </b>{{holiday.description}} <br>
+						<b>Holiday For: </b>{{holiday.sjaFlag=='a'?'All':(holiday.sjaFlag=='s'?'Seniors':'Juniors')}}
+						<hr>
+					</div>
+            </table>
+        </div>
+    </div>
+</div>

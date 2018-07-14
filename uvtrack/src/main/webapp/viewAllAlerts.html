@@ -1,0 +1,26 @@
+<div class="col-md-12 col-part-left" style="max-height:480px; overflow-y:auto; -webkit-overflow-scrolling: touch;">
+      <div class="box box-primary"> 
+<h4 class="box-title">Notifications</h4>
+<div class="box-footer" style="text-align: center;">
+				<div class="alert alert-success" ng-show="showSuccessAlert">
+					<button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button>
+					<strong></strong>{{successTextAlert}}
+				</div>
+			</div>
+<div  style="height: 437px;overflow: scroll;width: 100%;">
+<table id="dataTableGrid"
+				class="table table-bordered table-striped dt-responsive nowrap">
+			
+				<tbody>
+					<tr
+						ng-repeat="pick in pickUpalerts | orderBy:'pickUpTime'" >
+
+						<td>{{pick.userName}} is requesting for {{pick.message}} his kid-{{pick.firstName}} at {{pick.pickTime}} </td>
+						
+					</tr>
+				</tbody>
+			</table>
+			
+			</div>
+</div>
+</div>

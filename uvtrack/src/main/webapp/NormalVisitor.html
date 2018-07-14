@@ -1,0 +1,125 @@
+<div class="col-md-12 col-part-left" style="max-height: 480px; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+
+	<div class="box box-primary">
+		<div class="box-header">
+			<h3 class="box-title">Normal Visitor</h3>
+
+		</div>
+		<div class="box-body chat" id="chat-box">
+
+			<div class="item">
+				
+				<div class="pull-left" >
+					<button href="#parentsVisitorModal"  ng-click="showparentsVisitorModal()"  class="btn btn-primary form-control">Visitor</button>
+				</div>
+			</div>
+			<div id="parentsVisitorModal" class="modal fade" tabindex="-1" style="display: none;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Visitor Request</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+					     <div class="form-group">
+							<div class="col-md-6 col-xs-12">
+								<label for="userName" >Visitor Name</label> 
+								 <input type="text" ng-model="userName" name="userName" class="form-control">
+							</div>
+						</div>
+						</div>
+						<div class="row">
+					<div class="form-group">
+							<div class="col-md-6 col-xs-12">
+								<label for="firstName" >Purpose</label> 
+								<input type="text" ng-model="purpose" name="purpose" class="form-control">   
+							</div>
+						</div>
+						</div>			
+					
+					<div class="row">
+						<div class="form-group">
+							<div class="col-md-6 col-xs-12">
+								<label for="VisitorNumber">Mobile No</label> <input type="text" onkeyup="this.value = this.value.replace(/[^0-9]/, '')" ng-model="visitorNumber" name="inTime" class="form-control">
+							</div>
+						</div>
+						
+					</div>
+					<div class="row">
+					    <div class="form-group">
+					    <div class="col-md-6 col-xs-12">
+                        <label for="userPhoto">Photo</label>
+                        <input type="file" id="userPhoto" name="userPhoto">
+                       
+                    </div>
+					</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group">
+							<div class="col-md-6 col-xs-12" style="margin-top:10px">
+								<button type="button" data-dismiss="modal" class="btn btn-inverse">Cancel</button>
+								<button type="submit" class="btn btn-primary" ng-click="sendParentsVisitorRequest()" ng-disabled="disableButton">Done</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">  {{successTextAlert}} </div>
+			</div>
+						<div id="otpModal" class="modal fade" tabindex="-1" style="display: none;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">OTP Request</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+					<div class="form-group">
+							<div class="col-md-6 col-xs-12">
+								<label for="className" >Enter OTP Code</label> 
+									<input type="text" max="6" ng-model="otpNumber" name="otpNumber" class="form-control">   
+							</div>
+						</div>			
+					
+					
+					
+					<div class="row">
+						<div class="form-group">
+							<div class="col-md-6 col-xs-12" style="margin-top:10px">
+							<input type="hidden" ng-model="userNumber">
+							<input type="hidden" ng-model="uuid">
+								<button type="button" data-dismiss="modal" class="btn btn-inverse">Cancel</button>
+								<button type="submit" class="btn btn-primary" ng-click="sendOTPRequest()" ng-disabled="disableButton">Done</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+					<div class="form-group">
+					<div class="col-md-6 col-xs-12" style="margin-top:10px"><div>Time left - <span id="timer"></span></div>
+					<button type="submit" class="btn btn-primary" id="disableResendButton" ng-click="resendOTPRequest()" ng-disabled="disableResendButton">Resend OTP</button>
+					</div>
+					</div>
+					</div>
+				</div></div>
+				<div class="modal-footer">  {{successTextAlert}} </div>
+			</div>
+
+			<div class="box-footer" style="text-align: center;">
+				<div class="alert alert-success" ng-show="showSuccessAlert">
+					<button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button>
+					<strong></strong>{{successTextAlert}}
+				</div>
+			</div>
+					
+
+			
+			
+			<!-- /.tab-pane -->
+
+			<!-- /.tab-pane -->
+		</div>
+
+		</div>
+
+	</div>
+
+
+

@@ -1,0 +1,247 @@
+<style>
+ul#menu {
+	padding: 0;
+	margin-right: 10px;
+}
+
+ul#menu li {
+	display: inline;
+}
+
+.leaflet-container {
+    overflow: hidden;
+    -ms-touch-action: none;
+    touch-action: none;
+    width: 179vh !important; 
+    height: 80vh !important;
+     position: relative !important;
+     border:double;
+}
+
+ul#menu li a {
+	background-color: #3CA4D8;
+	color: white;
+	padding: 5px 12px;
+	text-decoration: none;
+	border-radius: 4px 4px 0 0;
+}
+
+ul#menu li a:hover {
+	background-color: grey;
+}
+
+#mapDivId {
+	min-height: 560px !important;
+}
+
+.datedropdownCustom {
+	width: 220px;
+}
+
+html {
+	overflow-y: hidden;
+}
+
+.leaflet-div-icon {
+	/* background: #fff; */
+	border: 0px solid #666;
+	height: 0px ! important;
+	width: 0px ! important;
+}
+input[type="checkbox"]
+{
+    vertical-align:middle;
+}
+
+
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale {
+    font-size: 11px;
+    display: none;
+}
+</style>
+
+
+<div class="box box-primary" data-ng-init="loadEmptyMarker()">
+	<div class="box-header">
+		<h3 class="box-title">Position Summary Report</h3>
+		<div>
+			<button class="btn btn-primary" ng-click="back()"
+				style="margin-left: 600px;float:right;margin:10px;">Back</button>
+		</div>
+
+
+<div class="col-md-12">
+
+		<table style="width: 100%;height: 100%;" >
+			<tr>
+
+				<td style="padding: 0;vertical-align: top;width: 17%;">
+				<table style="width: 18%;margin-left:10px;margin-right:10px;">
+						<tr>
+							<td></td>
+						</tr>
+
+						<tr>
+							<td style="text-align: left;"><label>Date</label> <input type="date"
+								class="form-control datedropdownCustom" ng-model="date"
+								name="date" style="width: 170px;" /></td>
+						</tr>
+						
+						<tr>
+							<td style="text-align: left;"><label>From Time</label> <input type="time"
+								class="form-control datedropdownCustom" ng-model="fromTime"
+								name="fromTime" style="width: 170px;" /></td>
+								
+						</tr><tr>
+						<td style="text-align: left; padding-right: 20px"><label>To Time</label> <input type="time"
+								class="form-control datedropdownCustom" ng-model="toTime"
+								name="toTime" style="width: 170px;" /></td>
+								</tr>
+						<tr>
+							<td style="text-align: left;"><label>Vehicle</label> <select name="vehicleId"
+								ng-model="vehicleId" class="form-control" style="width: 170px;" ng-change="selectVehicle()">
+									<option value="">Select Vehicle</option>
+									<option ng-repeat="fleet in allVehicleList"
+										value="{{fleet.id}}">{{fleet.regNumber}}</option>
+							</select></td>
+						</tr>
+						<tr ng-show="user.role == 'administrator'">
+						<td>
+						<li style="list-style-type: none; margin-right: 67px;">
+                                                      <input id="checkid" type="checkbox" value="test" ng-model="ticked"  ng-disabled="mySwitch" />
+                                                      <label style="font-weight: 400;" for="checkid">Show way points</label>
+                                                </li>
+						
+						</td>
+						
+						</tr>
+						
+						<tr ng-show="user.role == 'administrator'">
+						<td>
+						<li style="list-style-type: none; margin-right: 111px;">
+                           <input id="checkid" type="checkbox" value="test" ng-model="tickedgeofence" ng-disabled="mySwitch" />
+                            <label style="font-weight: 400;" for="checkid" >Geofence</label>
+                       </li>
+						
+						</td>
+						
+						</tr>
+						
+						<tr>
+							<td><div style="margin-top: 10px; align: right;">
+									<button type="submit" class="btn btn-primary"
+										ng-click="loadPositionReport();">Go</button>
+								</div>
+								</td>
+						</tr>
+						<tr>
+							<td style="padding-top: 10px"></td>
+						</tr>
+						<tr>
+							<td>
+								<button type="submit" class="btn btn-primary" ng-click="downloadPositionReport()" ng-show="positionReportList.length>0" >Export Report in Excel</button> 
+							</td>
+						</tr>
+						
+						<tr>
+							<td ng-if="selectedWaypoint != null">
+						<lable style="font-weight: 800;float: left;font-size: medium;">Student Name  :</lable><span style="display: block;text-align: left;font-size: medium;">{{selectedWaypoint.studentNames ||"NA"}}</span>
+						 <lable style="font-weight: 800;float: left;font-size: medium;">Pickup Time :</lable><span style="margin-right: 22px;font-size: medium;">{{selectedWaypoint.timePick ||"NA"}}</span>
+						 <br>
+						 <lable style="font-weight: 800;float: left;font-size: medium;">Drop Time :</lable><span style="margin-right: 41px;font-size: medium;">{{selectedWaypoint.timeDrop ||"NA"}}</span>
+						  <lable style="font-weight: 800;float: left;font-size: medium;">WayPointId :</lable><span style="margin-right: 62px;font-size: medium;">{{selectedWaypoint.wayPointId ||"NA"}}</span>
+                             </td>
+						</tr>
+						<tr>
+							<td>
+								
+							</td>
+						</tr>
+
+
+					</table></td>
+				<td>
+					<div id="preMap">
+					<div id="map" style="width:179vh;height: 500px;"></div>
+					</div>
+					
+				</td>
+			</tr>
+		</table>
+
+
+</div>
+
+		<br />
+
+		<table style="height: 100%; width: 100%;margin-right:10px;">
+			<tr>
+				<td>
+					<table id="dataTableGrid1"
+						class="table table-bordered table-striped dt-responsive nowrap"
+						style="border-spacing: 0; width: 165px;visibility: hidden;">
+						<thead style="display: block;">
+							<tr>
+								<th style="width: 20px">Attribute</th>
+								<th style="width: 20px">Value</th>
+
+							</tr>
+						</thead>
+						<tbody
+							style="display: block; height: 100px; overflow-y: auto; overflow-x: hidden;">
+							<tr>
+								<td style="width: 20px">Time</td>
+								<td style="width: 20px">10:00</td>
+
+							</tr>
+							<tr>
+								<td style="width: 20px">Latitude</td>
+								<td style="width: 20px">22.833</td>
+
+							</tr>
+							<tr>
+								<td style="width: 20px">Longitude</td>
+
+								<td style="width: 20px">16.777</td>
+							</tr>
+
+							<tr>
+								<td style="width: 20px">Speed</td>
+								<td style="width: 20px">10</td>
+
+							</tr>
+
+							<tr>
+								<td style="width: 20px">Course</td>
+
+								<td style="width: 20px">10</td>
+							</tr>
+							<tr>
+								<td style="width: 20px">Address</td>
+
+								<td style="width: 20px"></td>
+							</tr>
+
+							<tr>
+								<td style="width: 20px">Altitude</td>
+
+								<td style="width: 20px"></td>
+							</tr>
+
+						</tbody>
+					</table>
+				</td>
+				<td><span us-spinner="{radius:30, width:8, length: 16}"></span>
+										
+			</tr>
+		</table>
+
+	</div>
+
+	<script src="http://cdn.leafletjs.com/leaflet/v1.0.0/leaflet-src.js"></script>
+	<script src="js/leaflet.rotatedMarker.js"></script>
+
+	<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"> </script>
+
+
+</div>
